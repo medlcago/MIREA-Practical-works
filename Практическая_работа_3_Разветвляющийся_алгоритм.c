@@ -9,9 +9,9 @@ double f(double x, double y, double z) {
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-	
+
     double x, y, z;
-	
+
     printf("Введите x: ");
     scanf_s("%lf", &x);
 
@@ -21,10 +21,10 @@ int main() {
     printf("Введите z: ");
     scanf_s("%lf", &z);
 
-    if (fabs(x - y) * z + pow(x, 2) == 0)
-	printf("ERROR!\n");
+    if ((fabs(x - y) * z + pow(x, 2) != 0) && (x >= -1 && x <= 1))
+        printf("%.3lf", f(x, y, z));
     else
-	printf("%.3lf", f(x, y, z));
+        printf("ERROR!\n");
 
     return 0;
 }
