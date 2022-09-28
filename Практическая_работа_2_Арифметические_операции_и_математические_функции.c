@@ -17,9 +17,9 @@ int main() {
     printf("Введите z: ");
     scanf_s("%lf", &z);
 
-    double result = ((exp(fabs(x - y)) * pow(fabs(x - y), x + y)) / (atan(x) + atan(z))) + pow(pow(x, 6) + pow(log(y), 2), 1. / 3.);
+    double f = ((exp(fabs(x - y)) * pow(fabs(x - y), x + y)) / (atan(x) + atan(z))) + pow(pow(x, 6) + pow(log(y), 2), 1. / 3.);
 
-    printf("%.3lf", result);
+    printf("%.3lf", f);
 
     return 0;
 }
