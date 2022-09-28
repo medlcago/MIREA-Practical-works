@@ -3,14 +3,16 @@
 #include <windows.h>
 
 double f(double x, double y, double z) {
-    return 5 * atan(x) - 1. / 4. * acos(x) * ((x + 3 * fabs(x - y) + pow(x, 2)) / (fabs(x - y) * z + pow(x, 2)));
+    return ((exp(fabs(x - y)) * pow(fabs(x - y), x + y)) / (atan(x) + atan(z))) + pow(pow(x, 6) + pow(log(y), 2), 1. / 3.);
 }
 
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    double x, y, z;
+    double x, y;
+    double z = 15.221;
+
 
     printf("Введите x: ");
     scanf_s("%lf", &x);
@@ -18,11 +20,9 @@ int main() {
     printf("Введите y: ");
     scanf_s("%lf", &y);
 
-    printf("Введите z: ");
-    scanf_s("%lf", &z);
 
-    if ((fabs(x - y) * z + pow(x, 2) != 0) && (x >= -1 && x <= 1))
-        printf("%.3lf", f(x, y, z));
+    if (y > 0 && x != -z) // atan(x) + atan(z) = 0  => (x = -z)
+        printf("%.3lf\n", f(x, y, z));
     else
         printf("ERROR!\n");
 
