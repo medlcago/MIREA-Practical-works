@@ -20,7 +20,6 @@ int main()
 	printf("Введите z: ");
 	scanf_s("%lf", &z);
 
-
 	printf("Введите символ: ");
 	while ((getchar()) != '\n');
 	scanf_s("%s", &ch, 2);
