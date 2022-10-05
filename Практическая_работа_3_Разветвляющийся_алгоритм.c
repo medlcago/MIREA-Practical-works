@@ -21,23 +21,23 @@ int main()
 	scanf_s("%lf", &z);
 
 
-	while ((getchar()) != '\n');
 	printf("Введите символ: ");
-	scanf_s("%s", &ch, 2);
 	while ((getchar()) != '\n');
+	scanf_s("%s", &ch, 2);
 
 	numerator = exp(fabs(x - y)) * pow(fabs(x - y), x + y);
 	denominator = atan(x) + atan(z);
 	element = pow(pow(x, 6) + pow(log(y), 2), 1. / 3.);
 
 	result = (numerator / denominator) + element;
+	bool odz = x == -z || y <= 0;
 
 	switch (ch[0])
 	{
 	case '+': 
 	case '*': 
 	case '-':
-		if (x == -z || y <= 0)
+		if (odz)
 		{
 			printf("\nНе выполняется область допустимых значений!\n");
 			break;
@@ -59,7 +59,7 @@ int main()
 
 	default:
 		printf("\nInvalid data!\n");
-		return 700;
+		return 666;
 	}
 
 	return 0;
