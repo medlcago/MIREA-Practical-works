@@ -29,14 +29,18 @@ int main()
 	element = pow(pow(x, 6) + pow(log(y), 2), 1. / 3.);
 
 	result = (numerator / denominator) + element;
-	bool odz = x == -z || y <= 0;
 
 	switch (ch[0])
 	{
-	case '+': 
-	case '*': 
+	case '+':
+	case '*':
 	case '-':
-		if (odz)
+		if (x == -z)
+		{
+			printf("\nНе выполняется область допустимых значений!\n");
+			break;
+		}
+		else if (y <= 0) 
 		{
 			printf("\nНе выполняется область допустимых значений!\n");
 			break;
@@ -47,7 +51,7 @@ int main()
 			break;
 		}
 
-	case '[': 
+	case '[':
 	case ']':
 		printf("%.3lf", result);
 		break;
