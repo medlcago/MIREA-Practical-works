@@ -7,7 +7,7 @@ int main() {
 
 	int arr[20];
 	int n;
-	
+
 a1:
 	printf("Введите длину массива (5-20): ");
 	scanf_s("%d", &n);
@@ -19,11 +19,11 @@ a1:
 
 	for (int i = 0; i < n; i++) {
 a2:
-		printf("\nInput elem value a[%d] = ", i);
+		printf("\nВведите значение элемента a[%d] = ", i);
 		scanf_s("%d", &arr[i]);
 		if (arr[i] < -100 || arr[i] > 100)
 		{
-			printf("\nДиапазон значения должен быть от -100 до 100\n"); 
+			printf("\nДиапазон значения должен быть от -100 до 100\n");
 			goto a2;
 		}
 	}
@@ -38,7 +38,7 @@ a2:
 		}
 	}
 
-	printf("\nSorted array:\n");
+	printf("\nОтсортированный массив:\n");
 	for (int i = 0; i < n; i++)
 		printf("%d ", arr[i]);
 
