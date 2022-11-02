@@ -40,7 +40,9 @@ a2:
 		arr[min_v] = temp;
 	}
 
-	printf("Отсортированный массив: ");
-	for (n = 0; n < i; n++)
-		printf("%d ", a[n]);
+	printf("\nНовый массив:\n");
+	for (int i = 0; i < n; i++)
+		printf("%d ", arr[i]);
+
+	return 0;
 }
