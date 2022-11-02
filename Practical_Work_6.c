@@ -29,18 +29,18 @@ a2:
 	}
 
 	for (int i = 0; i < n - 1; i++) {
-		for (int j = 0; j < n - i - 1; j++) {
-			if (arr[j] < arr[j + 1]) {
-				int tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
+		int min_v = i;
+		for (int j = i + 1; j < n; j++) {
+			if (arr[min_v] > arr[j]) {
+				min_v = j;
 			}
 		}
+		int temp = arr[i];
+		arr[i] = arr[min_v];
+		arr[min_v] = temp;
 	}
 
-	printf("\nОтсортированный массив:\n");
-	for (int i = 0; i < n; i++)
-		printf("%d ", arr[i]);
-
-	return 0;
+	printf("Отсортированный массив: ");
+	for (n = 0; n < i; n++)
+		printf("%d ", a[n]);
 }
