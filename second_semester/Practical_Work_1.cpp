@@ -93,7 +93,8 @@ int main() {
 		top_score = average_scores.sopromat;
 		title = "Сопромат";
 	}
-
+	
+	delete[] student;
 	std::cout << "\nПредмет, который был сдан группой лучше всего: " << title << "\n";
 	return 0;
 }
