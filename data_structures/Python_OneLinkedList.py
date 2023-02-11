@@ -27,12 +27,16 @@ class OneLinkedList:
         self.tail = None
 
     def push_front(self, obj) -> None:
+        if not isinstance(obj, Node):
+            obj = Node(obj)
         if self.tail is None:
             self.tail = obj
         obj.next = self.head
         self.head = obj
 
     def push_back(self, obj) -> None:
+        if not isinstance(obj, Node):
+            obj = Node(obj)
         if self.head is None:
             self.head = obj
         if self.tail:
@@ -62,6 +66,8 @@ class OneLinkedList:
     def getAt(self, index) -> Node | None:
         if index < 0:
             return
+        if index >= self.__len__():
+            raise IndexError(f"Value at index {index} does not exist")
         node = self.head
         n = 0
         while node and n != index and node.next:
@@ -71,6 +77,10 @@ class OneLinkedList:
 
     def insert(self, index, data) -> None:
         if index > 0:
+            if index >= self.__len__():
+                raise IndexError(f"Value at index {index} does not exist")
+            if not isinstance(data, Node):
+                data = Node(data)
             left = self.getAt(index - 1)
             if left is None:
                 return
@@ -87,6 +97,8 @@ class OneLinkedList:
         if index == 0:
             self.pop_front()
             return
+        if index >= self.__len__():
+            raise IndexError(f"Value at index {index} does not exist")
         left = self.getAt(index - 1)
         node = left.next
         if node is None:
@@ -108,25 +120,36 @@ class OneLinkedList:
         self.head = None
         self.tail = None
 
+    def __len__(self):
+        node = self.head
+        n = 0
+        while node:
+            node = node.next
+            n += 1
+        return n
+
 
 if __name__ == '__main__':
     lst = OneLinkedList()
     lst.push_front(Node(1))
-    lst.push_back(Node(5))
-    lst.push_back(Node(7))
-    lst.push_front(Node(9))
+    lst.push_back(5)
+    lst.push_back(7)
+    lst.push_front(9)
     lst.pop_back()
     lst.pop_front()
-    lst.insert(0, Node(123))
-    lst.push_back(Node(93))
-    lst.insert(1, Node(0))
+    lst.insert(0, 123)
+    lst.push_back(93)
+    lst.insert(1, 0)
     lst.erase(0)
-    print(lst.get_data()) # [0, 1, 5, 93]
+    print(lst.get_data())  # [0, 1, 5, 93]
+    print(len(lst))  # 4
 
     lst.clear()
-    print(lst.get_data()) # []
+    print(lst.get_data())  # []
+    print(len(lst))  # 0
 
-    lst.push_front(Node(1))
-    lst.push_back(Node(5))
-    lst.insert(1, Node(4444))
-    print(lst.get_data()) # [1, 4444, 5]
+    lst.push_front(1)
+    lst.push_back(5)
+    lst.insert(1, 4444)
+    print(lst.get_data())  # [1, 4444, 5]
+    print(len(lst))  # 3
