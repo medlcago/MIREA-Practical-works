@@ -21,7 +21,7 @@ struct Transport
 void Draw(const Transport* transport, const unsigned int n) {
     constexpr int kLineWidth = 100;
     const std::string kLineSeparator(kLineWidth, '-');
-    
+
     std::cout << "|" << kLineSeparator << "|" << std::endl;
     std::cout << "| " << std::left << std::setw(kLineWidth - 2) << "Ведомость общественного транспорта" << " |" << std::endl;
     std::cout << "|" << kLineSeparator << "|" << std::endl;
@@ -99,14 +99,18 @@ int main()
     SetConsoleOutputCP(1251);
 
     unsigned int n;
-    std::cout << "Введите количество строк в таблице: ";
+    std::cout << "Введите количество столбцов в таблице: ";
     std::cin >> n;
     Transport* transport = new Transport[n + 1];
-    
+
     std::cin.ignore(32767, '\n');
-    
+
     std::cout << "Программа: Ведомость общественного транспорта\n";
     InputData(transport, n);
+    Draw(transport, n);
+
+    std::cout << std::endl;
+
     AddData(transport, n);
     Draw(transport, n + 1);
     delete[] transport;
