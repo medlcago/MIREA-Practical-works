@@ -99,7 +99,7 @@ int main()
     SetConsoleOutputCP(1251);
 
     unsigned int n;
-    std::cout << "Введите количество столбцов в таблице: ";
+    std::cout << "Введите количество строк в таблице: ";
     std::cin >> n;
     Transport* transport = new Transport[n + 1];
 
