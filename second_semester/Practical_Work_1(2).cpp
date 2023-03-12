@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 #include <Windows.h>
 
 struct Date {
@@ -9,7 +10,7 @@ struct Date {
     std::string year;
 };
 
-struct Transport
+struct Record
 {
     std::string type;
     std::string route;
@@ -18,7 +19,7 @@ struct Transport
     Date date;
 };
 
-void Draw(const Transport* transport, const unsigned int n) {
+void Draw(const Record* transport, const unsigned int n) {
     constexpr int kLineWidth = 100;
     const std::string kLineSeparator(kLineWidth, '-');
 
@@ -37,7 +38,7 @@ void Draw(const Transport* transport, const unsigned int n) {
     std::cout << "|" << kLineSeparator << "|" << std::endl;
 }
 
-void InputData(Transport* transport, const unsigned n) {
+void InputData(Record* transport, const unsigned n) {
     for (int i = 0; i < n; i++) {
         std::cout << "\n" << i + 1 << " запись в таблице\n";
         std::cout << "Введите вид транспорта: ";
@@ -72,7 +73,7 @@ void InputData(Transport* transport, const unsigned n) {
     }
 }
 
-void AddData(Transport* transport, const unsigned int n) {
+void AddData(Record* transport, const unsigned int n) {
     float min_length = transport[0].length;
     unsigned int min_time = transport[0].time;
     for (int i = 1; i < n; i++) {
@@ -101,18 +102,37 @@ int main()
     unsigned int n;
     std::cout << "Введите количество строк в таблице: ";
     std::cin >> n;
-    Transport* transport = new Transport[n + 1];
+    Record* Table = new Record[n + 1];
 
     std::cin.ignore(32767, '\n');
 
     std::cout << "Программа: Ведомость общественного транспорта\n";
-    InputData(transport, n);
-    Draw(transport, n);
+    InputData(Table, n);
+    AddData(Table, n);
+    Draw(Table, n + 1);
 
     std::cout << std::endl;
 
-    AddData(transport, n);
-    Draw(transport, n + 1);
-    delete[] transport;
+    // Record* A = (Record*)std::malloc((n + 1) * sizeof(Record));
+    Record* A = new Record[n + 1];
+
+    std::copy(Table, Table + n + 1, A);
+
+    Record* B = new Record[n + 1];
+    std::copy(A, A + n + 1, B);
+
+    // выводим на экран адреса первого элемента массива Тable, массива А и массива В
+    std::cout << "Table: " << Table << std::endl;
+    std::cout << "A: " << A << std::endl;
+    std::cout << "B: " << B << std::endl << std::endl;
+
+    std::cout << std::setw(20) << "Address A" << std::setw(20) << "Value A" << std::setw(20) << "Address B" << std::setw(20) << "Value B" << std::endl;
+    for (int i = 0; i < n; i++)
+        std::cout << std::setw(20) << &A[i] << std::setw(20) << A[i].type << std::setw(20) << &B[i] << std::setw(20) << B[i].type << std::endl;
+
+    // освобождаем память
+    delete[] A;
+    delete[] B;
+    delete[] Table;
     return 0;
 }
