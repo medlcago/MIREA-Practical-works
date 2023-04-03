@@ -199,6 +199,8 @@ public:
     }
 };
 
+
+
 void Zadanie_1(Record* transport, unsigned int n) {
     std::cout << "Программа: Ведомость общественного транспорта\n";
     InputData(transport, n);
@@ -251,7 +253,7 @@ void Prak_4(Record* transport) {
 
     // записать 3 записи (три строки (records) из таблицы в файл в текстовом формате
     std::ofstream file_ofstream;
-    file_ofstream.open("Korolev.txt", std::ofstream::app);
+    file_ofstream.open("Korolev.txt");
     if (!file_ofstream.is_open()) {
         std::cout << "Ошибка открытия файла." << std::endl;
     }
@@ -375,6 +377,50 @@ void Prak_4(Record* transport) {
     file_ifstream_binary.close();
     std::cout << "\n\nТаблица из бинарного файла:\n\n";
     Draw(readRecords_binary, 3);
+
+
+    // добавить новую запись (четвертую) в указанный существующий файл, вводя данные с клавиатуры.
+    const unsigned int number_records = 1; // Количество новых записей для добавления в файл
+    Record new_data[number_records];
+    std::cout << "\n";
+    InputData(new_data, number_records);
+
+    file_ofstream.open("Korolev.txt", std::fstream::app);
+    if (!file_ofstream.is_open()) {
+        std::cout << "Ошибка открытия файла." << std::endl;
+    }
+    else {
+        for (int i = 0; i < number_records; i++) {
+            file_ofstream << new_data[i].type << " " << new_data[i].route << " " << new_data[i].length << " " << new_data[i].time << " " << new_data[i].date.day << " " << new_data[i].date.month << " " << new_data[i].date.year;
+            file_ofstream << "\n";
+        }
+    }
+    file_ofstream.close();
+
+
+    Record fileRecords[4];
+    file_ifstream.open("Korolev.txt");
+    if (!file_ifstream.is_open()) {
+        std::cout << "Ошибка открытия файла." << std::endl;
+    }
+    else {
+        for (int i = 0; i < 4; i++) {
+            file_ifstream >> fileRecords[i].type >> fileRecords[i].route >> fileRecords[i].length >> fileRecords[i].time >> fileRecords[i].date.day >> fileRecords[i].date.month >> fileRecords[i].date.year;
+        }
+    }
+    file_ifstream.close();
+    std::cout << "\n\nНовая таблица с четвертой записью:\n\n";
+    Draw(fileRecords, 4);
+
+    // поменять местами строковые значения в 3 и 4 записях файла. Данные считываются из файла.
+    std::swap(fileRecords[2].type, fileRecords[3].type);
+    std::swap(fileRecords[2].route, fileRecords[3].route);
+    std::swap(fileRecords[2].date.day, fileRecords[3].date.day);
+    std::swap(fileRecords[2].date.month, fileRecords[3].date.month);
+    std::swap(fileRecords[2].date.year, fileRecords[3].date.year);
+
+    std::cout << "\n\nНовая измененная таблица с четвертой записью:\n\n";
+    Draw(fileRecords, 4);
 }
 
 
