@@ -211,13 +211,13 @@ public:
 
     clDate()
     {
-        std::cout << "\n\nВызов конструктора без параметров\n";
+        std::cout << "\nВызов конструктора без параметров\n";
         setDate("05", "04", "2023");
     }
 
     clDate(std::string _day, std::string _month, std::string _year)
     {
-        std::cout << "\n\nВызов конструктора с тремя параметрами\n";
+        std::cout << "\nВызов конструктора с тремя параметрами\n";
         setDate(_day, _month, _year);
     }
 
@@ -500,12 +500,12 @@ void Prak_5() {
     date_1.printDate();
 
     clDate date_2{"01", "12", "2003"};
-    date_1.printDate();
+    date_2.printDate();
 
     clDate date_3{ Date{"08", "03", "2000"} };
     date_3.printDate();
     
-    clDate date_4{ new Date{"08", "03", "2000"} };
+    clDate date_4{ new Date{"01", "01", "1970"} };
     date_4.printDate();
 
 }
