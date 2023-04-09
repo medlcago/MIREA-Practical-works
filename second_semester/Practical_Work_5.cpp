@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <Windows.h>
 
+constexpr int kLineWidth = 100;
+const std::string kLineSeparator(kLineWidth, '-');
+
 struct Date {
     std::string day;
     std::string month;
@@ -21,9 +24,6 @@ struct Record
 };
 
 void Draw(const Record* transport, const unsigned int n) {
-    constexpr int kLineWidth = 100;
-    const std::string kLineSeparator(kLineWidth, '-');
-
     std::cout << "|" << kLineSeparator << "|" << std::endl;
     std::cout << "| " << std::left << std::setw(kLineWidth - 2) << "Ведомость общественного транспорта" << " |" << std::endl;
     std::cout << "|" << kLineSeparator << "|" << std::endl;
@@ -207,42 +207,43 @@ private:
     std::string month;
     std::string day;
 public:
-    char delimiter = '.';
-
     clDate()
     {
-        std::cout << "\nВызов конструктора без параметров\n";
+        std::cout << "\nВызов конструктора класса clDate со значениями по умолчанию\n";
         setDate("05", "04", "2023");
     }
 
     clDate(std::string _day, std::string _month, std::string _year)
     {
-        std::cout << "\nВызов конструктора с тремя параметрами\n";
+        std::cout << "\nВызов конструктора класса clDate с тремя параметрами\n";
         setDate(_day, _month, _year);
-    }
-
-    clDate(Date mD) { 
-        std::cout << "\nВызов конструктора с параметром Date mD\n";
-        setDate(mD); 
     }
 
     clDate(Date* pD)
     {
-        std::cout << "\nВызов конструктора с параметром Date* pD\n";
-        day = pD->day;
-        month = pD->month;
-        year = pD->year;
+        std::cout << "\nВызов конструктора класса clDate с параметром Date* pD\n";
+        setDate(pD);
     }
 
-    ~clDate() { 
-        std::cout << "\nВызов деструктора класса clDate\n";
+    clDate(Date mD) {
+        std::cout << "\nВызов конструктора класса clDate с параметром Date mD\n";
+        setDate(mD);
+    }
+
+    ~clDate() {
+        ;
+    }
+
+    void setDate(Date* _mD)
+    {
+        setDate(_mD->day, _mD->month, _mD->year);
     }
 
     void setDate(Date _mD)
     {
         setDate(_mD.day, _mD.month, _mD.year);
     }
-    
+
     void setDate(std::string _day, std::string _month, std::string _year)
     {
         this->day = _day;
@@ -268,10 +269,70 @@ public:
     std::string getYear() { return year; }
 
     void printDate() {
-        std::cout << this->getDay() << this->delimiter << this->getMonth() << this->delimiter << this->getYear() << std::endl;
+        std::cout << this->getDay() << "." << this->getMonth() << "." << this->getYear() << std::endl;
     }
 };
 
+class сlRecord {
+    std::string type;
+public:
+    std::string route;
+private:
+    float length;
+protected:
+    unsigned int time;
+    Date date;
+public:
+
+    сlRecord() {
+        std::cout << "\nВызов конструктора класса сlRecord со значениями по умолчанию\n";
+        setRecord("Тр", "12", 27.550, 75, Date{ "03", "04", "2022" });
+    }
+
+    сlRecord(std::string _type, std::string _route, float _length, unsigned _time, Date _date) {
+        std::cout << "\nВызов конструктора класса сlRecord с пятью параметрами\n";
+        setRecord(_type, _route, _length, _time, _date);
+    }
+
+    сlRecord(Record* record) {
+        std::cout << "\nВызов конструктора класса сlRecord с параметром Record* record\n";
+        setRecord(record->type, record->route, record->length, record->time, record->date);
+    }
+
+    сlRecord(Record record) {
+        std::cout << "\nВызов конструктора класса сlRecord с параметром Record record\n";
+        setRecord(record.type, record.route, record.length, record.time, record.date);
+    }
+
+    ~сlRecord() {
+        ;
+    }
+
+    void setRecord(std::string _type, std::string _route, float _length, unsigned _time, Date _date) {
+        this->type = _type;
+        this->route = _route;
+        this->length = _length;
+        this->time = _time;
+        this->date = _date;
+    }
+
+    void setType(std::string _type) { type = _type; }
+    void setRoute(std::string _route) { route = _route; }
+    void setLength(float _length) { length = _length; }
+    void setTime(unsigned _time) { time = _time; }
+    void setDate(Date _date) { date = _date; }
+
+    std::string getType() { return type; }
+    std::string getRoute() { return route; }
+    float getLength() { return length; }
+    unsigned getTime() { return time; }
+    Date getDate() { return date; }
+
+    void printRecord() {
+        Record record{ getType(), getRoute(), getLength(), getTime(), getDate() };
+        Draw(&record, 1);
+    }
+};
 
 void Zadanie_1(Record* transport, unsigned int n) {
     std::cout << "Программа: Ведомость общественного транспорта\n";
@@ -499,15 +560,25 @@ void Prak_5() {
     clDate date_1{};
     date_1.printDate();
 
-    clDate date_2{"01", "12", "2003"};
+    clDate date_2{ "01", "12", "2003" };
     date_2.printDate();
 
     clDate date_3{ Date{"08", "03", "2000"} };
     date_3.printDate();
-    
+
     clDate date_4{ new Date{"01", "01", "1970"} };
     date_4.printDate();
 
+
+    сlRecord record_1{};
+    сlRecord record_2{ "Тр", "12", 27.550, 75, {"05", "08", "2020"} };
+    сlRecord record_3{ Record{"А", "17ф", 432, 33, {"12", "05", "1970"}} };
+    сlRecord record_4{ new Record{"Т-с", "12г", 58, 93, {"01", "01", "1999"}} };
+    
+    сlRecord array[3];
+    array[0] = { "Тр", "12", 27.550, 75, { "03", "04", "2022" } };
+    array[1] = { "Т-с", "17", 13.600, 57, { "03", "04", "2020" } };
+    array[2] = { "А", "12а", 57.300, 117, { "04", "03", "2022" } };
 }
 
 int main()
