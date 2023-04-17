@@ -23,7 +23,7 @@ struct Record
     Date date;
 };
 
-void Draw(const Record* transport, const unsigned int n) {
+void Draw(const Record* Table, const unsigned int n) {
     std::cout << "|" << kLineSeparator << "|" << std::endl;
     std::cout << "| " << std::left << std::setw(kLineWidth - 2) << "Ведомость общественного транспорта" << " |" << std::endl;
     std::cout << "|" << kLineSeparator << "|" << std::endl;
@@ -31,7 +31,7 @@ void Draw(const Record* transport, const unsigned int n) {
     std::cout << "|" << kLineSeparator << "|" << std::endl;
 
     for (int i = 0; i < n; i++) {
-        std::cout << std::setiosflags(std::ios::left) << "| " << std::setw(17) << transport[i].type << " | " << std::setw(12) << transport[i].route << " | " << std::setw(27) << std::setprecision(3) << std::fixed << transport[i].length << " | " << std::setw(21) << transport[i].time << "|" << std::setw(12) << transport[i].date.day + "." + transport[i].date.month + "." + transport[i].date.year << "|\n" << std::resetiosflags(std::ios::left);
+        std::cout << std::setiosflags(std::ios::left) << "| " << std::setw(17) << Table[i].type << " | " << std::setw(12) << Table[i].route << " | " << std::setw(27) << std::setprecision(3) << std::fixed << Table[i].length << " | " << std::setw(21) << Table[i].time << "|" << std::setw(12) << Table[i].date.day + "." + Table[i].date.month + "." + Table[i].date.year << "|\n" << std::resetiosflags(std::ios::left);
         std::cout << "|" << kLineSeparator << "|" << std::endl;
     }
 
@@ -39,17 +39,17 @@ void Draw(const Record* transport, const unsigned int n) {
     std::cout << "|" << kLineSeparator << "|" << std::endl;
 }
 
-void InputData(Record* transport, const unsigned n) {
+void InputData(Record* Table, const unsigned n) {
     for (int i = 0; i < n; i++) {
         std::cout << "\n" << i + 1 << " запись в таблице\n";
         std::cout << "Введите вид транспорта: ";
-        std::getline(std::cin, transport[i].type);
+        std::getline(std::cin, Table[i].type);
 
         std::cout << "Введите маршрут: ";
-        std::getline(std::cin, transport[i].route);
+        std::getline(std::cin, Table[i].route);
     a1:
         std::cout << "Введите протяженность маршрута (км): ";
-        while (!(std::cin >> transport[i].length)) {
+        while (!(std::cin >> Table[i].length)) {
             std::cout << "Неверные данные! Пожалуйста, введите еще раз!\n";
             std::cin.clear();
             std::cin.ignore(32767, '\n');
@@ -59,7 +59,7 @@ void InputData(Record* transport, const unsigned n) {
 
     a2:
         std::cout << "Введите время в дороге (мин): ";
-        while (!(std::cin >> transport[i].time)) {
+        while (!(std::cin >> Table[i].time)) {
             std::cout << "Неверные данные! Пожалуйста, введите еще раз!\n";
             std::cin.clear();
             std::cin.ignore(32767, '\n');
@@ -68,25 +68,32 @@ void InputData(Record* transport, const unsigned n) {
         std::cin.ignore(32767, '\n');
 
         std::cout << "Введите дату: ";
-        std::getline(std::cin, transport[i].date.day, '.');
-        std::getline(std::cin, transport[i].date.month, '.');
-        std::getline(std::cin, transport[i].date.year);
+        std::getline(std::cin, Table[i].date.day, '.');
+        std::getline(std::cin, Table[i].date.month, '.');
+        std::getline(std::cin, Table[i].date.year);
     }
 }
 
-void AddData(Record* transport, const unsigned int n) {
-    float min_length = transport[0].length;
-    unsigned int min_time = transport[0].time;
+void AddData(Record* &Table, unsigned int &n) {
+    float min_length = Table[0].length;
+    unsigned int min_time = Table[0].time;
     for (int i = 1; i < n; i++) {
-        if (transport[i].length < min_length) {
-            min_length = transport[i].length;
+        if (Table[i].length < min_length) {
+            min_length = Table[i].length;
         }
-        if (transport[i].time < min_time) {
-            min_time = transport[i].time;
+        if (Table[i].time < min_time) {
+            min_time = Table[i].time;
         }
     }
+
     Record r1 = { "Тр", "26у", min_length, min_time, {"28", "02", "2023"} };
-    transport[n] = r1;
+    Record* newTable = new Record[n + 1];
+
+    std::copy(Table, Table + n, newTable);
+    newTable[n] = r1;
+    delete[] Table;
+    Table = newTable;
+    n++;
 }
 
 class Node {
@@ -334,28 +341,28 @@ public:
     }
 };
 
-void Zadanie_1(Record* transport, unsigned int n) {
+void Zadanie_1(Record* Table, unsigned int n) {
     std::cout << "Программа: Ведомость общественного транспорта\n";
-    InputData(transport, n);
+    InputData(Table, n);
     std::cout << std::endl;
 }
 
-void Prak_1(Record* transport, unsigned int n) {
-    Draw(transport, n);
-    AddData(transport, n);
-    Draw(transport, n + 1);
+void Prak_1(Record* &Table, unsigned int &n) {
+    Draw(Table, n);
+    AddData(Table, n);
+    Draw(Table, n);
 }
 
-void Prak_2(Record* transport, unsigned int n) {
-    Record* A = new Record[n + 1];
+void Prak_2(const Record* Table , const unsigned int n) {
+    Record* A = new Record[n];
 
-    std::copy(transport, transport + n + 1, A);
+    std::copy(Table, Table + n, A);
 
-    Record* B = new Record[n + 1];
-    std::copy(A, A + n + 1, B);
+    Record* B = new Record[n];
+    std::copy(A, A + n, B);
 
     // выводим на экран адреса первого элемента массива Тable, массива А и массива В
-    std::cout << "Table: " << transport << std::endl;
+    std::cout << "Table: " << Table << std::endl;
     std::cout << "A: " << A << std::endl;
     std::cout << "B: " << B << std::endl << std::endl;
 
@@ -381,7 +388,7 @@ void Prak_3() {
         std::cout << node->data << "\n";
 }
 
-void Prak_4(Record* transport) {
+void Prak_4(Record* Table) {
     // 1. Текстовый формат
 
     // записать 3 записи (три строки (records) из таблицы в файл в текстовом формате
@@ -392,7 +399,7 @@ void Prak_4(Record* transport) {
     }
     else {
         for (int i = 0; i < 3; i++) {
-            file_ofstream << transport[i].type << " " << transport[i].route << " " << transport[i].length << " " << transport[i].time << " " << transport[i].date.day << " " << transport[i].date.month << " " << transport[i].date.year;
+            file_ofstream << Table[i].type << " " << Table[i].route << " " << Table[i].length << " " << Table[i].time << " " << Table[i].date.day << " " << Table[i].date.month << " " << Table[i].date.year;
             file_ofstream << "\n";
         }
     }
@@ -424,41 +431,41 @@ void Prak_4(Record* transport) {
     }
     else {
         for (int i = 0; i < 3; i++) {
-            // Записываем transport[i].type
-            size_t len = transport[i].type.length();
+            // Записываем Table[i].type
+            size_t len = Table[i].type.length();
             file_ofstream_binary.write(reinterpret_cast<char*>(&len), sizeof(len));
-            file_ofstream_binary.write(transport[i].type.data(), len);
+            file_ofstream_binary.write(Table[i].type.data(), len);
 
 
-            // Записываем transport[i].route
-            len = transport[i].route.length();
+            // Записываем Table[i].route
+            len = Table[i].route.length();
             file_ofstream_binary.write(reinterpret_cast<char*>(&len), sizeof(len));
-            file_ofstream_binary.write(transport[i].route.data(), len);
+            file_ofstream_binary.write(Table[i].route.data(), len);
 
 
-            // Записываем transport[i].length
-            file_ofstream_binary.write(reinterpret_cast<char*>(&transport[i].length), sizeof(transport[i].length));
+            // Записываем Table[i].length
+            file_ofstream_binary.write(reinterpret_cast<char*>(&Table[i].length), sizeof(Table[i].length));
 
-            // Записываем transport[i].time
-            file_ofstream_binary.write(reinterpret_cast<char*>(&transport[i].time), sizeof(transport[i].time));
+            // Записываем Table[i].time
+            file_ofstream_binary.write(reinterpret_cast<char*>(&Table[i].time), sizeof(Table[i].time));
 
 
-            // Записываем transport[i].date.day
-            len = transport[i].date.day.length();
+            // Записываем Table[i].date.day
+            len = Table[i].date.day.length();
             file_ofstream_binary.write(reinterpret_cast<char*>(&len), sizeof(len));
-            file_ofstream_binary.write(transport[i].date.day.data(), len);
+            file_ofstream_binary.write(Table[i].date.day.data(), len);
 
 
-            // Записываем transport[i].date.month
-            len = transport[i].date.month.length();
+            // Записываем Table[i].date.month
+            len = Table[i].date.month.length();
             file_ofstream_binary.write(reinterpret_cast<char*>(&len), sizeof(len));
-            file_ofstream_binary.write(transport[i].date.month.data(), len);
+            file_ofstream_binary.write(Table[i].date.month.data(), len);
 
 
-            // Записываем transport[i].date.year
-            len = transport[i].date.year.length();
+            // Записываем Table[i].date.year
+            len = Table[i].date.year.length();
             file_ofstream_binary.write(reinterpret_cast<char*>(&len), sizeof(len));
-            file_ofstream_binary.write(transport[i].date.year.data(), len);
+            file_ofstream_binary.write(Table[i].date.year.data(), len);
 
         }
     }
@@ -574,7 +581,7 @@ void Prak_5() {
     сlRecord record_2{ "Тр", "12", 27.550, 75, {"05", "08", "2020"} };
     сlRecord record_3{ Record{"А", "17ф", 432, 33, {"12", "05", "1970"}} };
     сlRecord record_4{ new Record{"Т-с", "12г", 58, 93, {"01", "01", "1999"}} };
-    
+
     сlRecord array[3];
     array[0] = { "Тр", "12", 27.550, 75, { "03", "04", "2022" } };
     array[1] = { "Т-с", "17", 13.600, 57, { "03", "04", "2020" } };
@@ -589,7 +596,7 @@ int main()
     unsigned int n;
     std::cout << "Введите количество строк в таблице: ";
     std::cin >> n;
-    Record* Table = new Record[n + 1];
+    Record* Table = new Record[n];
 
     std::cin.ignore(32767, '\n');
 
