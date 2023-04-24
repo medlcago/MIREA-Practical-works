@@ -393,7 +393,8 @@ public:
 class clDataTime : public clDate, public clTime
 {
 public:
-    clDataTime(std::string day, std::string month, std::string year, std::string hour, std::string minute, std::string second) : clDate(day, month, year), clTime(hour, minute, second) {
+    clDataTime(std::string day, std::string month, std::string year, std::string hour, std::string minute, std::string second) 
+        : clDate(day, month, year), clTime(hour, minute, second) {
         std::cout << "\nВызов конструктора класса clDataTime\n";
     }
     void printDate() {
