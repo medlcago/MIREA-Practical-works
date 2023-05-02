@@ -38,6 +38,7 @@ ostream& operator<<(ostream& out, const clDate& date) {
 
 class clStudent {
 protected:
+    friend class clGroup;
     string surname;
     string name;
     string patronymic;
@@ -182,49 +183,36 @@ public:
 
         for (int i = 0; i < size; i++) {
             cout << "Введите фамилию студента #" << i + 1 << ": ";
-            string student_surname;
-            cin >> student_surname;
-            students[i].set_surname(student_surname);
+            cin >> students[i].surname;
             cin.ignore(32767, '\n');
 
             cout << "Введите имя студента #" << i + 1 << ": ";
-            string student_name;
-            cin >> student_name;
-            students[i].set_name(student_name);
+            cin >> students[i].name;
             cin.ignore(32767, '\n');
 
             cout << "Введите отчество студента #" << i + 1 << ": ";
-            string student_patronymic;
-            cin >> student_patronymic;
-            students[i].set_patronymic(student_patronymic);
+            cin >> students[i].patronymic;
             cin.ignore(32767, '\n');
 
             cout << "Введите дату рождения студента #" << i + 1 << ": ";
-            clDate student_birthdate;
-            cin >> student_birthdate;
-            students[i].set_birthdate(student_birthdate);
+            cin >> students[i].birthdate;
             cin.ignore(32767, '\n');
 
             cout << "Введите пол студента #" << i + 1 << ": ";
-            string student_gender;
-            cin >> student_gender;
-            students[i].set_gender(student_gender);
+            cin >> students[i].gender;
             cin.ignore(32767, '\n');
 
             cout << "Введите дату зачисления студента #" << i + 1 << ": ";
-            clDate student_enrollment_date;
-            cin >> student_enrollment_date;
-            students[i].set_enrollment_date(student_enrollment_date);
+            cin >> students[i].enrollment_date;
             cin.ignore(32767, '\n');
 
             cout << "Введите стипендию студента #" << i + 1 << ": ";
-            int student_scholarship;
-            cin >> student_scholarship;
-            students[i].set_scholarship(student_scholarship);
+            cin >> students[i].scholarship;
             cin.ignore(32767, '\n');
 
             cout << endl;
         }
+        system("cls");
     }
 
     void output_group_data() const {
