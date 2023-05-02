@@ -29,7 +29,10 @@ istream& operator>>(istream& in, clDate& date) {
 }
 
 ostream& operator<<(ostream& out, const clDate& date) {
-    out << date.day << '.' << date.month << '.' << date.year;
+    if (date.day < 10) out << '0';
+    out << date.day << '.';
+    if (date.month < 10) out << '0';
+    out << date.month << '.' << date.year;
     return out;
 }
 
@@ -222,8 +225,6 @@ public:
 
             cout << endl;
         }
-
-
     }
 
     void output_group_data() const {
