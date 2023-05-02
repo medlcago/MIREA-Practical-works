@@ -43,7 +43,7 @@ protected:
     clDate enrollment_date;
     int scholarship;
 public:
-    clStudent(){}
+    clStudent() {}
 
     clStudent(string surname, string name, string patronymic, clDate birthdate, string gender, clDate enrollment_date, int scholarship) {
         this->surname = surname;
@@ -153,6 +153,10 @@ protected:
 public:
     clGroup(string name, string institute, string department, string curator, int size) : name(name), institute(institute), department(department), curator(curator), size(size) {
         students = new clStudent[size];
+    }
+
+    ~clGroup() {
+        delete[] students;
     }
 
     void input_group_data() {
