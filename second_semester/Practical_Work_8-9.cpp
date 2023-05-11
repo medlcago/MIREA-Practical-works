@@ -6,24 +6,38 @@
 using namespace std;
 
 class clDate {
+private:
     int day;
     int month;
     int year;
 public:
-    clDate() {}
-    clDate(int day, int month, int year) : day(day), month(month), year(year) {}
+    clDate(int day=1, int month=1, int year=1970) : day(day), month(month), year(year) {}
 
-    friend istream& operator>>(istream& in, clDate& date);
-    friend ostream& operator<<(ostream& out, const clDate& date);
+    int get_day() { return this->day; }
+
+    void set_day(int day) { this->day = day; }
+
+    int get_month() { return this->month; }
+
+    void set_month(int month) { this->month = month; }
+
+    int get_year() { return this->year; }
+
+    void set_year(int year) { this->year = year; }
+
 
     bool operator<(const clDate& other) const {
         if (year != other.year) return year < other.year;
         if (month != other.month) return month < other.month;
         return day < other.day;
     }
+
+    friend istream& operator>>(istream& in, clDate& date);
+    friend ostream& operator<<(ostream& out, const clDate& date);
 };
 
 istream& operator>>(istream& in, clDate& date) {
+    cout << "(день месяц год): ";
     in >> date.day >> date.month >> date.year;
     return in;
 }
@@ -38,7 +52,6 @@ ostream& operator<<(ostream& out, const clDate& date) {
 
 class clStudent {
 protected:
-    friend class clGroup;
     string surname;
     string name;
     string patronymic;
@@ -59,70 +72,42 @@ public:
         this->scholarship = scholarship;
     }
 
-    string get_surname() const {
-        return surname;
-    }
+    string get_surname() const { return surname; }
 
-    void set_surname(const string& surname) {
-        this->surname = surname;
-    }
+    void set_surname(const string& surname) { this->surname = surname; }
 
-    string get_name() const {
-        return name;
-    }
+    string get_name() const { return name; }
 
-    void set_name(const string& name) {
-        this->name = name;
-    }
+    void set_name(const string& name) { this->name = name; }
 
-    string get_patronymic() const {
-        return patronymic;
-    }
+    string get_patronymic() const { return patronymic; }
 
-    void set_patronymic(const string& patronymic) {
-        this->patronymic = patronymic;
-    }
+    void set_patronymic(const string& patronymic) { this->patronymic = patronymic; }
 
-    clDate get_birthdate() const {
-        return birthdate;
-    }
+    clDate get_birthdate() const { return birthdate; }
 
-    void set_birthdate(const clDate& birthdate) {
-        this->birthdate = birthdate;
-    }
+    void set_birthdate(const clDate& birthdate) { this->birthdate = birthdate; }
 
-    string get_gender() const {
-        return gender;
-    }
+    string get_gender() const { return gender; }
 
-    void set_gender(const string& gender) {
-        this->gender = gender;
-    }
+    void set_gender(const string& gender) { this->gender = gender; }
 
-    clDate get_enrollment_date() const {
-        return enrollment_date;
-    }
+    clDate get_enrollment_date() const { return enrollment_date; }
 
-    void set_enrollment_date(const clDate& enrollment_date) {
-        this->enrollment_date = enrollment_date;
-    }
+    void set_enrollment_date(const clDate& enrollment_date) { this->enrollment_date = enrollment_date; }
 
-    int get_scholarship() const {
-        return scholarship;
-    }
+    int get_scholarship() const { return scholarship; }
 
-    void set_scholarship(const int& scholarship) {
-        this->scholarship = scholarship;
-    }
+    void set_scholarship(const int& scholarship) { this->scholarship = scholarship; }
 
     clStudent& operator=(const clStudent& other) {
-        surname = other.surname;
-        name = other.name;
-        patronymic = other.patronymic;
-        birthdate = other.birthdate;
-        gender = other.gender;
-        enrollment_date = other.enrollment_date;
-        scholarship = other.scholarship;
+        this->surname = other.surname;
+        this->name = other.name;
+        this->patronymic = other.patronymic;
+        this->birthdate = other.birthdate;
+        this->gender = other.gender;
+        this->enrollment_date = other.enrollment_date;
+        this->scholarship = other.scholarship;
         return *this;
     }
 
@@ -130,18 +115,55 @@ public:
         if (scholarship != other.scholarship) return scholarship < other.scholarship;
         return gender < other.gender;
     }
-
+    
+    friend class clGroup;
     friend istream& operator>>(istream& in, clStudent& student);
     friend ostream& operator<<(ostream& out, const clStudent& student);
 };
 
 istream& operator>>(istream& in, clStudent& student) {
-    in >> student.surname >> student.name >> student.patronymic >> student.birthdate >> student.gender >> student.enrollment_date >> student.scholarship;
+    cout << "Введите фамилию студента: ";
+    in >> student.surname;
+    in.ignore(32767, '\n');
+
+    cout << "Введите имя студента: ";
+    in >> student.name;
+    in.ignore(32767, '\n');
+
+    cout << "Введите отчество студента: ";
+    in >> student.patronymic;
+    in.ignore(32767, '\n');
+
+    cout << "Введите дату рождения студента (день месяц год): ";
+    in >> student.birthdate;
+    in.ignore(32767, '\n');
+
+    cout << "Введите пол студента: ";
+    in >> student.gender;
+    in.ignore(32767, '\n');
+
+    cout << "Введите дату зачисления студента (день месяц год): ";
+    in >> student.enrollment_date;
+    in.ignore(32767, '\n');
+
+    cout << "Введите стипендию студента: ";
+    in >> student.scholarship;
+    in.ignore(32767, '\n');
+
+    cout << endl;
     return in;
 }
 
 ostream& operator<<(ostream& out, const clStudent& student) {
-    out << student.surname << ' ' << student.name << ' ' << student.patronymic << ' ' << student.birthdate << ' ' << student.gender << ' ' << student.enrollment_date << ' ' << student.scholarship;
+    system("cls");
+    out << "Фамилия: " << student.get_surname() << '\n';
+    out << "Имя: " << student.get_name() << '\n';
+    out << "Отчество: " << student.get_patronymic() << '\n';
+    out << "Дата рождения: " << student.get_birthdate() << '\n';
+    out << "Пол: " << student.get_gender() << '\n';
+    out << "Дата зачисления: " << student.get_enrollment_date() << '\n';
+    out << "Размер стипендии: " << student.get_scholarship() << '\n';
+    out << endl;
     return out;
 }
 
@@ -155,12 +177,15 @@ protected:
     clStudent* students;
 
 public:
+    clGroup() {}
+
     clGroup(string name, string institute, string department, string curator, int size) : name(name), institute(institute), department(department), curator(curator), size(size) {
-        students = new clStudent[size];
+        this->students = new clStudent[size];
     }
 
     ~clGroup() {
-        delete[] students;
+        if (students != nullptr)
+            delete[] students;
     }
 
     void input_group_data() {
@@ -251,25 +276,34 @@ public:
             students[j + 1] = key;
         }
     }
+    
+    friend istream& operator>>(istream& in, clGroup& group);
+    friend ostream& operator<<(ostream& out, const clGroup& group);
+
 };
+
+istream& operator>>(istream& in, clGroup& group) {
+    group.input_group_data();
+    return in;
+}
+
+ostream& operator<<(ostream& out, const clGroup& group) {
+    group.output_group_data();
+    return out;
+}
 
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    clGroup group("", "", "", "", 0);
+    constexpr int kLineWidth = 100;
+    const std::string kLineSeparator(kLineWidth, '-');
 
-    group.input_group_data();
-
-    cout << endl;
-
-    group.output_group_data();
-
+    clGroup group;
+    cin >> group;
+    cout << group;
     group.sort_students();
-
-    cout << endl;
-
-    group.output_group_data();
-
+    cout << kLineSeparator << endl;
+    cout << group;
     return 0;
 }
