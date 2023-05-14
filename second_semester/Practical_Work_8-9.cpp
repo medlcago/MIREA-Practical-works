@@ -7,6 +7,9 @@
 
 using namespace std;
 
+const unsigned kLineWidth = 100;
+const string kLineSeparator(kLineWidth, '-');
+
 class clDate {
 private:
     int day;
@@ -273,7 +276,7 @@ public:
             << setw(20) << department
             << setw(20) << curator
             << setw(20) << size << '\n';
-        cout << string(100, '-');
+        cout << kLineSeparator;
         cout << endl;
     }
 
@@ -290,7 +293,7 @@ public:
 
             cout << endl;
         }
-        cout << string(100, '-');
+        cout << kLineSeparator;
         cout << endl;
     }
 
@@ -326,9 +329,6 @@ ostream& operator<<(ostream& out, const clGroup& group) {
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-
-    const unsigned kLineWidth = 100;
-    const std::string kLineSeparator(kLineWidth, '-');
 
     clGroup group;
     cin >> group;
