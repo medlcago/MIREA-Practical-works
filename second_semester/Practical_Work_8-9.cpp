@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <algorithm>
 #include <limits>
 #include <Windows.h>
 
@@ -188,6 +190,26 @@ public:
             delete[] students;
     }
 
+    string get_name() { return this->name; }
+
+    void set_name(string name) { this->name = name; }
+
+    string get_institute() { return this->institute; }
+
+    void set_institute(string institute) { this->institute = institute; }
+
+    string get_department() { return this->department; }
+
+    void set_department(string department) { this->department = department; }
+
+    string get_curator() { return this->curator; }
+
+    void set_curator(string curator) { this->curator = curator; }
+
+    int get_size() { return this->size; }
+
+    void set_size(int size) { this->size = size; }
+
     void input_group_data() {
         cout << "Введите название группы: ";
         getline(cin, name);
@@ -240,15 +262,22 @@ public:
         system("cls");
     }
 
-    void output_group_data() const {
-        cout << "Название группы: " << name << endl;
-        cout << "Институт: " << institute << endl;
-        cout << "Кафедра: " << department << endl;
-        cout << "Куратор: " << curator << endl;
-        cout << "Численность группы: " << size << endl;
+    void printGroupInformation() {
+        std::cout << std::left << std::setw(20) <<  "Название группы"
+            << setw(20) << "Институт"
+            << setw(20) << "Кафедра"
+            << setw(20) << "Куратор"
+            << setw(20) << "Численность группы" << '\n';
+        cout << left << std::setw(20) << name
+            << setw(20) << institute
+            << setw(20) << department
+            << setw(20) << curator
+            << setw(20) << size << '\n';
+        cout << string(100, '-');
+        cout << endl;
+    }
 
-        cout << endl << endl;
-
+    void printStudentInformation() const {
         for (int i = 0; i < size; i++) {
             cout << "Студент #" << i + 1 << ":\n";
             cout << "Фамилия: " << students[i].get_surname() << '\n';
@@ -261,6 +290,8 @@ public:
 
             cout << endl;
         }
+        cout << string(100, '-');
+        cout << endl;
     }
 
     void sort_students() {
@@ -288,7 +319,7 @@ istream& operator>>(istream& in, clGroup& group) {
 }
 
 ostream& operator<<(ostream& out, const clGroup& group) {
-    group.output_group_data();
+    group.printStudentInformation();
     return out;
 }
 
@@ -296,14 +327,16 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    constexpr int kLineWidth = 100;
+    const unsigned kLineWidth = 100;
     const std::string kLineSeparator(kLineWidth, '-');
 
     clGroup group;
     cin >> group;
+    
+    group.printGroupInformation();
+    
     cout << group;
     group.sort_students();
-    cout << kLineSeparator << endl;
     cout << group;
     return 0;
 }
