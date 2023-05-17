@@ -16,20 +16,7 @@ private:
     int month;
     int year;
 public:
-    clDate(int day=1, int month=1, int year=1970) : day(day), month(month), year(year) {}
-
-    int get_day() { return this->day; }
-
-    void set_day(int day) { this->day = day; }
-
-    int get_month() { return this->month; }
-
-    void set_month(int month) { this->month = month; }
-
-    int get_year() { return this->year; }
-
-    void set_year(int year) { this->year = year; }
-
+    clDate(int day = 1, int month = 1, int year = 1970) : day(day), month(month), year(year) {}
 
     bool operator<(const clDate& other) const {
         if (year != other.year) return year < other.year;
@@ -77,34 +64,6 @@ public:
         this->scholarship = scholarship;
     }
 
-    string get_surname() const { return surname; }
-
-    void set_surname(const string& surname) { this->surname = surname; }
-
-    string get_name() const { return name; }
-
-    void set_name(const string& name) { this->name = name; }
-
-    string get_patronymic() const { return patronymic; }
-
-    void set_patronymic(const string& patronymic) { this->patronymic = patronymic; }
-
-    clDate get_birthdate() const { return birthdate; }
-
-    void set_birthdate(const clDate& birthdate) { this->birthdate = birthdate; }
-
-    string get_gender() const { return gender; }
-
-    void set_gender(const string& gender) { this->gender = gender; }
-
-    clDate get_enrollment_date() const { return enrollment_date; }
-
-    void set_enrollment_date(const clDate& enrollment_date) { this->enrollment_date = enrollment_date; }
-
-    int get_scholarship() const { return scholarship; }
-
-    void set_scholarship(const int& scholarship) { this->scholarship = scholarship; }
-
     clStudent& operator=(const clStudent& other) {
         this->surname = other.surname;
         this->name = other.name;
@@ -120,7 +79,7 @@ public:
         if (scholarship != other.scholarship) return scholarship < other.scholarship;
         return gender < other.gender;
     }
-    
+
     friend class clGroup;
     friend istream& operator>>(istream& in, clStudent& student);
     friend ostream& operator<<(ostream& out, const clStudent& student);
@@ -129,45 +88,44 @@ public:
 istream& operator>>(istream& in, clStudent& student) {
     cout << "Введите фамилию студента: ";
     in >> student.surname;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
     cout << "Введите имя студента: ";
     in >> student.name;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
     cout << "Введите отчество студента: ";
     in >> student.patronymic;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
-    cout << "Введите дату рождения студента (день месяц год): ";
+    cout << "Введите дату рождения студента: ";
     in >> student.birthdate;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
     cout << "Введите пол студента: ";
     in >> student.gender;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
-    cout << "Введите дату зачисления студента (день месяц год): ";
+    cout << "Введите дату зачисления студента: ";
     in >> student.enrollment_date;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
     cout << "Введите стипендию студента: ";
     in >> student.scholarship;
-    in.ignore(32767, '\n');
+    in.ignore(32768, '\n');
 
     cout << endl;
     return in;
 }
 
 ostream& operator<<(ostream& out, const clStudent& student) {
-    system("cls");
-    out << "Фамилия: " << student.get_surname() << '\n';
-    out << "Имя: " << student.get_name() << '\n';
-    out << "Отчество: " << student.get_patronymic() << '\n';
-    out << "Дата рождения: " << student.get_birthdate() << '\n';
-    out << "Пол: " << student.get_gender() << '\n';
-    out << "Дата зачисления: " << student.get_enrollment_date() << '\n';
-    out << "Размер стипендии: " << student.get_scholarship() << '\n';
+    out << "Фамилия: " << student.surname << '\n';
+    out << "Имя: " << student.name << '\n';
+    out << "Отчество: " << student.patronymic << '\n';
+    out << "Дата рождения: " << student.birthdate << '\n';
+    out << "Пол: " << student.gender << '\n';
+    out << "Дата зачисления: " << student.enrollment_date << '\n';
+    out << "Размер стипендии: " << student.scholarship << '\n';
     out << endl;
     return out;
 }
@@ -189,112 +147,59 @@ public:
     }
 
     ~clGroup() {
-        if (students != nullptr)
-            delete[] students;
+        delete[] students;
     }
 
-    string get_name() { return this->name; }
-
-    void set_name(string name) { this->name = name; }
-
-    string get_institute() { return this->institute; }
-
-    void set_institute(string institute) { this->institute = institute; }
-
-    string get_department() { return this->department; }
-
-    void set_department(string department) { this->department = department; }
-
-    string get_curator() { return this->curator; }
-
-    void set_curator(string curator) { this->curator = curator; }
-
-    int get_size() { return this->size; }
-
-    void set_size(int size) { this->size = size; }
-
-    void input_group_data() {
+    void readFromStream(istream& in) {
         cout << "Введите название группы: ";
-        getline(cin, name);
+        getline(in, name);
         cout << "Введите институт: ";
-        getline(cin, institute);
+        getline(in, institute);
         cout << "Введите кафедру: ";
-        getline(cin, department);
+        getline(in, department);
         cout << "Введите куратора: ";
-        getline(cin, curator);
+        getline(in, curator);
         cout << "Введите численность группы: ";
-        cin >> size;
+        in >> size;
 
-        cin.ignore(32767, '\n');
+        in.ignore(32767, '\n');
 
         cout << endl;
 
+        if (students != nullptr) {
+            delete[] students;
+        }
         students = new clStudent[size];
 
         for (int i = 0; i < size; i++) {
-            cout << "Введите фамилию студента #" << i + 1 << ": ";
-            cin >> students[i].surname;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите имя студента #" << i + 1 << ": ";
-            cin >> students[i].name;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите отчество студента #" << i + 1 << ": ";
-            cin >> students[i].patronymic;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите дату рождения студента #" << i + 1 << ": ";
-            cin >> students[i].birthdate;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите пол студента #" << i + 1 << ": ";
-            cin >> students[i].gender;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите дату зачисления студента #" << i + 1 << ": ";
-            cin >> students[i].enrollment_date;
-            cin.ignore(32767, '\n');
-
-            cout << "Введите стипендию студента #" << i + 1 << ": ";
-            cin >> students[i].scholarship;
-            cin.ignore(32767, '\n');
-
+            cout << "Студент #" << i + 1 << ": " << endl;
+            in >> students[i];
             cout << endl;
         }
-        system("cls");
     }
 
-    void printGroupInformation() {
-        std::cout << std::left << std::setw(20) <<  "Название группы"
+    void printGroupInformation(ostream& out) const {
+        out << left << setw(20) << "Название группы"
             << setw(20) << "Институт"
             << setw(20) << "Кафедра"
             << setw(20) << "Куратор"
             << setw(20) << "Численность группы" << '\n';
-        cout << left << std::setw(20) << name
+        out << left << setw(20) << name
             << setw(20) << institute
             << setw(20) << department
             << setw(20) << curator
             << setw(20) << size << '\n';
-        cout << kLineSeparator;
-        cout << endl;
+        out << kLineSeparator;
+        out << endl;
     }
 
-    void printStudentInformation() const {
+    void writeToStream(ostream& out) const {
         for (int i = 0; i < size; i++) {
-            cout << "Студент #" << i + 1 << ":\n";
-            cout << "Фамилия: " << students[i].get_surname() << '\n';
-            cout << "Имя: " << students[i].get_name() << '\n';
-            cout << "Отчество: " << students[i].get_patronymic() << '\n';
-            cout << "Дата рождения: " << students[i].get_birthdate() << '\n';
-            cout << "Пол: " << students[i].get_gender() << '\n';
-            cout << "Дата зачисления: " << students[i].get_enrollment_date() << '\n';
-            cout << "Размер стипендии: " << students[i].get_scholarship() << '\n';
-
-            cout << endl;
+            out << "Студент #" << i + 1 << ":\n";
+            out << students[i];
         }
         cout << kLineSeparator;
-        cout << endl;
+        out << endl;
     }
 
     void sort_students() {
@@ -310,19 +215,26 @@ public:
             students[j + 1] = key;
         }
     }
-    
+
+    clStudent& operator[](int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Index out of range");
+        }
+        return students[index];
+    }
+
     friend istream& operator>>(istream& in, clGroup& group);
     friend ostream& operator<<(ostream& out, const clGroup& group);
 
 };
 
 istream& operator>>(istream& in, clGroup& group) {
-    group.input_group_data();
+    group.readFromStream(in);
     return in;
 }
 
 ostream& operator<<(ostream& out, const clGroup& group) {
-    group.printStudentInformation();
+    group.writeToStream(out);
     return out;
 }
 
@@ -332,9 +244,8 @@ int main() {
 
     clGroup group;
     cin >> group;
-    
-    group.printGroupInformation();
-    
+    system("cls");
+    group.printGroupInformation(cout);
     cout << group;
     group.sort_students();
     cout << group;
