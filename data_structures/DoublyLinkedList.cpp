@@ -1,147 +1,146 @@
 #include <iostream>
 
-
+template <typename T>
 class Node {
 public:
-	double data;
-	Node* prev, * next;
+    T data;
+    Node* prev, * next;
 public:
-	Node(double data) {
-		this->data = data;
-		this->prev = this->next = NULL;
-	}
+    Node(T data) {
+        this->data = data;
+        this->prev = this->next = NULL;
+    }
 };
 
+template <typename T>
 class DoublyLinkedList {
 public:
-	Node* head, * tail;
+    Node<T>* head, * tail;
 public:
-	DoublyLinkedList() {
-		this->head = this->tail = NULL;
-	}
+    DoublyLinkedList() {
+        this->head = this->tail = NULL;
+    }
 
-	~DoublyLinkedList() {
-		while (head != NULL)
-			pop_front();
-	}
+    ~DoublyLinkedList() {
+        while (head != NULL)
+            pop_front();
+    }
 
-	Node* push_front(double data) { // Добавляем элемент в начало списка
-		Node* node = new Node(data);
-		node->next = head;
-		if (head != NULL)
-			head->prev = node;
-		if (tail == NULL)
-			tail = node;
-		head = node;
-		return node;
-	}
+    Node<T>* push_front(T data) {
+        Node<T>* node = new Node<T>(data);
+        node->next = head;
+        if (head != NULL)
+            head->prev = node;
+        if (tail == NULL)
+            tail = node;
+        head = node;
+        return node;
+    }
 
-	Node* push_back(double data) { // Добавляем элемент в конец списка
-		Node* node = new Node(data);
-		node->prev = tail;
-		if (tail != NULL)
-			tail->next = node;
-		if (head == NULL)
-			head = node;
-		tail = node;
-		return node;
-	}
+    Node<T>* push_back(T data) {
+        Node<T>* node = new Node<T>(data);
+        node->prev = tail;
+        if (tail != NULL)
+            tail->next = node;
+        if (head == NULL)
+            head = node;
+        tail = node;
+        return node;
+    }
 
-	void pop_front() { // Удаляем первый элемент в списке
-		if (head == NULL) return;
+    void pop_front() {
+        if (head == NULL) return;
 
-		Node* node = head->next;
-		if (node != NULL)
-			node->prev = NULL;
-		else
-			tail = NULL;
+        Node<T>* node = head->next;
+        if (node != NULL)
+            node->prev = NULL;
+        else
+            tail = NULL;
 
-		delete head;
-		head = node;
-	}
+        delete head;
+        head = node;
+    }
 
-	void pop_back() { // Удаляем последний элемент в списке
-		if (tail == NULL) return;
+    void pop_back() {
+        if (tail == NULL) return;
 
-		Node* node = tail->prev;
-		if (node != NULL)
-			node->next = NULL;
-		else
-			head = NULL;
+        Node<T>* node = tail->prev;
+        if (node != NULL)
+            node->next = NULL;
+        else
+            head = NULL;
 
-		delete tail;
-		tail = node;
+        delete tail;
+        tail = node;
+    }
 
-	}
+    Node<T>* getAt(int k) {
+        if (k < 0) return NULL;
+        Node<T>* node = head;
+        int n = 0;
+        while (node && n != k && node->next) {
+            node = node->next;
+            n++;
+        }
+        return (n == k) ? node : NULL;
+    }
 
-	Node* getAt(int k) { // Получаем элемент списка по индексу k
-		if (k < 0) return NULL;
-		Node* node = head;
-		int n = 0;
-		while (node && n != k && node->next) {
-			node = node->next;
-			n++;
-		}
-		return (n == k) ? node : NULL;
-	}
+    Node<T>* operator [] (int k) {
+        return getAt(k);
+    }
 
-	Node* operator [] (int k) {
-		return getAt(k);
-	}
+    Node<T>* insert(int k, T data) {
+        Node<T>* right = getAt(k);
+        if (right == NULL)
+            return push_back(data);
 
-	Node* insert(int k, double data) { // Вставляем элемент в список по индексу k
-		Node* right = getAt(k);
-		if (right == NULL)
-			return push_back(data);
+        Node<T>* left = right->prev;
+        if (left == NULL)
+            return push_front(data);
 
-		Node* left = right->prev;
-		if (left == NULL)
-			return push_front(data);
+        Node<T>* node = new Node<T>(data);
+        node->prev = left;
+        node->next = right;
+        left->next = node;
+        right->prev = node;
 
-		Node* node = new Node(data);
-		node->prev = left;
-		node->next = right;
-		left->next = node;
-		right->prev = node;
+        return node;
+    }
 
-		return node;
-	}
+    void erase(int k) {
+        Node<T>* node = getAt(k);
+        if (node == NULL) return;
+        if (node->prev == NULL) {
+            pop_front();
+            return;
+        }
+        if (node->next == NULL) {
+            pop_back();
+            return;
+        }
 
-	void erase(int k) { // Удаляем элемент в списке по индексу k
-		Node* node = getAt(k);
-		if (node == NULL) return;
-		if (node->prev == NULL) {
-			pop_front();
-			return;
-		}
-		if (node->next == NULL) {
-			pop_back();
-			return;
-		}
-
-		Node* left = node->prev;
-		Node* right = node->next;
-		left->next = right;
-		right->prev = left;
-		delete node;
-	}
+        Node<T>* left = node->prev;
+        Node<T>* right = node->next;
+        left->next = right;
+        right->prev = left;
+        delete node;
+    }
 };
 
-
 int main() {
-	DoublyLinkedList list;
-	list.push_front(1);
-	list.push_back(5);
-	list.push_back(7);
-	list.push_front(9);
-	list.pop_back();
-	list.pop_front();
-	list.insert(1, 123);
-	list.push_back(93);
-	list.insert(2, 0);
-	list.erase(0);
+    DoublyLinkedList<int> list;
+    list.push_front(1);
+    list.push_back(5);
+    list.push_back(7);
+    list.push_front(9);
+    list.pop_back();
+    list.pop_front();
+    list.insert(1, 123);
+    list.push_back(93);
+    list.insert(2, 0);
+    list.erase(0);
 
-	for (Node* node = list.tail; node != NULL; node = node->prev)
-		std::cout << node->data << " ";
-	return 0;
+    for (Node<int>* node = list.tail; node != NULL; node = node->prev)
+        std::cout << node->data << " ";
+    return 0;
 }
